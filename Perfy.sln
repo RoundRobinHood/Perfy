@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.35219.272
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Perfy", "Perfy.csproj", "{A2B5D1C5-D439-42F2-A047-1A5942D8EF6C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A2B5D1C5-D439-42F2-A047-1A5942D8EF6C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A2B5D1C5-D439-42F2-A047-1A5942D8EF6C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A2B5D1C5-D439-42F2-A047-1A5942D8EF6C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A2B5D1C5-D439-42F2-A047-1A5942D8EF6C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C5EE9758-3B49-4CE2-8071-4E4F3D1AC1B5}
+	EndGlobalSection
+EndGlobal
