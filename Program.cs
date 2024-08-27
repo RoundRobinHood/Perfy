@@ -7,21 +7,6 @@ namespace Perfy
 {
     internal class Program
     {
-        static void EchoTest(TestResult result)
-        {
-            if(result.Accuracy < 0.5)
-            {
-                DisplayMethods.PrintError($"Test case failed: {result.Accuracy * 100}% accuracy\n");
-                DisplayMethods.PrintError($"Inputs:\t{String.Join(' ', result.Test.Inputs)}");
-                DisplayMethods.PrintError($"Expected Output:\t{String.Join(',', result.Test.Outputs)}");
-                DisplayMethods.PrintError($"Returned Output:\t{String.Join(',', result.ScriptOutputs)}");
-            }
-            else
-            {
-                Console.WriteLine($"\nTest case succeeded: {result.Accuracy * 100}% accuracy, {result.ElapsedMs}ms");
-                Console.WriteLine($"Inputs:\t{String.Join(' ', result.Test.Inputs)}");
-            }
-        }
         static void Main(string[] args)
         {
             Interpreter.ArgDictionary argDictionary = Interpreter.GrabArgs(args);
@@ -46,6 +31,7 @@ namespace Perfy
                     Inputs = key.Split(','),
                     Outputs = colonVals[key].Split(',')
                 });
+
             }
             else if (argDictionary.Flags.TryGetValue("datasource", out string? data))
             {
@@ -83,7 +69,7 @@ namespace Perfy
                 if (argDictionary.Flags.TryGetValue("batch", out string? batch))
                     tester = new BatchTester(dataSource.Clone(), processHandler, Interpreter.SafeInterpret<int>(batch, "Batch size must be a positive integer", (int i) => i > 0));
                 else
-                    tester = new SingleProcessTester(dataSource, processHandler);
+                    tester = new SingleProcessTester(dataSource.Clone(), processHandler);
 
                 //tester.OnTestCaseReturned += EchoTest;
                 //tester.TestingEnded += (self, results) =>
