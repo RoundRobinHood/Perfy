@@ -1,19 +1,20 @@
 ﻿using Perfy.DataGathering;
 using Perfy.Display;
+using System.Numerics;
 
 namespace Perfy
 {
     static class Interpreter
     {
-        public static int SafeInterpretPositiveInt(string input, string exitMessage)
+        public static T SafeInterpret<T>(string input, string exitMessage, Func<T, bool>? validator = null) where T : IParsable<T>
         {
-            if(int.TryParse(input, out int result) && result > 0)
+            if(T.TryParse(input, null, out T? result) && (validator == null || validator(result)))
                 return result;
             else
             {
                 DisplayMethods.PrintError(exitMessage);
                 Environment.Exit(0);
-                return -1;
+                return default;
             }
         }
         public struct ArgDictionary(Dictionary<string, string> flags, List<string> unnamedArgs)
@@ -28,7 +29,9 @@ namespace Perfy
             { "-time", "timeScript" },
             { "-d", "datasource" },
             { "-data", "datasource" },
-            { "-batch", "batch" }
+            { "-batch", "batch" },
+            { "-input", "onecase" },
+            { "-onecase", "onecase" }
         };
         public static ArgDictionary GrabArgs(string[] args)
         {
@@ -68,7 +71,10 @@ namespace Perfy
                 string[] sides = def.Split(':');
                 if(sides.Length != 2)
                 {
-                    DisplayMethods.PrintError($"Definition \"{def}\" contains multiple colons");
+                    if (sides.Length > 2)
+                        DisplayMethods.PrintError($"Definition \"{def}\" contains multiple colons");
+                    else
+                        DisplayMethods.PrintError($"Error at \"{s}\", expected dictionary (ex. a:3;b:4)");
                     Environment.Exit(0);
                 }
                 dict[sides[0]] = sides[1];
