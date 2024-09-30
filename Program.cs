@@ -9,6 +9,17 @@ namespace Perfy
     {
         static void Main(string[] args)
         {
+            if (args.Length == 0)
+            {
+                DisplayMethods.PrintError("No arguments detected. Note that as a cmdlet, this does not work without arguments. Run cmd and navigate to this project's bin folder. Printing the help menu:");
+                DisplayMethods.HelpMenu();
+                return;
+            }
+            if(args.Contains("-h") || args.Contains("--help"))
+            {
+                DisplayMethods.HelpMenu();
+                return;
+            }
             Interpreter.ArgDictionary argDictionary = Interpreter.GrabArgs(args);
             if (!argDictionary.Flags.TryGetValue("runCommand", out string? rcmd))
                 rcmd = ":script :inputs";
@@ -80,7 +91,7 @@ namespace Perfy
                 testers.Add(tester);
             }
             DisplayHandler displayHandler = new Racer([..testers], 400);
-            Thread displayThread = new Thread(displayHandler.Listen);
+            Thread displayThread = new(displayHandler.Listen);
             Thread[] threads = new Thread[testers.Count];
             for(int i = 0;i < threads.Length;i++)
                 threads[i] = new Thread(testers[i].Start);

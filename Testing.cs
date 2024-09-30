@@ -44,11 +44,6 @@ namespace Perfy.Testing
         int TestCaseCount = 0;
         double TotalAccuracy = 0;
 
-        void RefHandler(TestCase test, ref TestResult result)
-        {
-            result = Handler.HandleTestCase(test);
-        }
-
         public override void Start()
         {
             if (BatchSize <= 0)

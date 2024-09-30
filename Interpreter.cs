@@ -26,7 +26,8 @@ namespace Perfy
         {
             { "-rcmd", "runCommand" },
             { "-runCommand", "runCommand" },
-            { "-time", "timeScript" },
+            { "-time", "timeoutms" },
+            { "-timeout", "timeoutms" },
             { "-d", "datasource" },
             { "-data", "datasource" },
             { "-batch", "batch" },

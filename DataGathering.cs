@@ -13,8 +13,8 @@ namespace Perfy.DataGathering
     }
     class InvalidSourceException(string filename, string message) : Exception
     {
-        string Filename = filename;
-        string ErrorMessage = message;
+        readonly string Filename = filename;
+        readonly string ErrorMessage = message;
         public override string ToString()
         {
             return $"Error encountered with file \"{Filename}\":\"{ErrorMessage}\". Developer info:\n{base.ToString()}";

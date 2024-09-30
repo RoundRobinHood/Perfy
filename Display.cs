@@ -5,7 +5,27 @@ namespace Perfy.Display
 {
     static class DisplayMethods
     {
-        public static void StrikeThrough(char c)
+        public static void HelpMenu()
+        {
+            StrikeThrough();
+            Console.WriteLine("Welcome to the help menu.");
+            StrikeThrough();
+            Console.WriteLine("\nThis cmd toolkit expects command-line arguments, most often flags");
+            Console.WriteLine("Any argument not passed as the value of a flag, is assumed to be a script name by the program");
+            Console.WriteLine("For example, if you have Python installed, and the \"demonstrations\" scripts and data are in the same folder as this executable, you can run this to compare the speed of a few Python scripts:\n");
+            Console.WriteLine("\tPerfy.exe -rcmd \"py.exe :script :inputs\" -data jsfile:data.json primeFinder1.py primeFinder2.py\n");
+            (string, string)[] Explanations =
+            [
+                ("-h/--help", "Display this help menu"),
+                ("-rcmd/-runCommand", "Specify the command used to execute a specific script. Takes a value of \":script :inputs\" by default (script is replaced with the script argument, and inputs with the test case inputs)"),
+                ("-time/-timeout", "Specify the maximum timeout for your script in milliseconds (used to stop potential infinite loops from crashing this program). Is 10 seconds by default"),
+                ("-data/-d", "Specify data source. Currently only supports jsfile:filename.json (object array with Inputs and Outputs as string arrays)"),
+                ("-batch","\tSpecify a batch size (for n concurrent test cases per script)"),
+                ("-input/-onecase", "Provide a single test case to test the script(s) against"),
+            ];
+            foreach((string, string) explanation in  Explanations) Console.WriteLine("{0}\t\t{1}", explanation.Item1, explanation.Item2);
+        }
+        public static void StrikeThrough(char c = '=')
         {
             string s = "";
             for (int i = 0; i < Console.WindowWidth; i++)
@@ -35,7 +55,7 @@ namespace Perfy.Display
         readonly TesterEndArgs[] EndArgs;
         int PrintedResults = 0;
         readonly int[] ReceivedResults;
-        bool[] TestingEnded;
+        readonly bool[] TestingEnded;
         volatile bool Process = false;
         public Racer(Tester[] testers, int caseCount) : base(testers, caseCount)
         {
@@ -71,7 +91,7 @@ namespace Perfy.Display
             }
             PrintResults();
         }
-        List<(int, int)> ErrorCases = [];
+        readonly List<(int, int)> ErrorCases = [];
         void PrintComparison(int caseId)
         {
             Console.WriteLine();
@@ -139,15 +159,17 @@ namespace Perfy.Display
                 {
                     Console.ForegroundColor = ConsoleColor.White;
                     Console.WriteLine("Test result {0} from script {1}", index.Item2 + 1, index.Item1 + 1);
+                    Console.WriteLine("Script input: {0}", String.Join(',', Results[index.Item1, index.Item2].Test.Inputs));
                     if (Results[index.Item1, index.Item2].Errors.Length > 0)
                     {
+                        
                         Console.WriteLine("Errors were thrown:");
                         DisplayMethods.PrintError(Results[index.Item1, index.Item2].Errors);
                     }
                     else
                     {
                         Console.WriteLine("Wrong output returned (Accuracy {0}%)", Results[index.Item1, index.Item2].Accuracy * 100);
-                        Console.WriteLine("Script input: {0}\nExpected output: {1}\n", String.Join(',', Results[index.Item1, index.Item2].Test.Inputs), String.Join(',', Results[index.Item1, index.Item2].Test.Outputs));
+                        Console.WriteLine("\nExpected output: {0}\n", String.Join(',', Results[index.Item1, index.Item2].Test.Outputs));
                         DisplayMethods.PrintError($"Script output: {String.Join(',', Results[index.Item1, index.Item2].ScriptOutputs)}");
                     }
                 }
